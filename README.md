@@ -8,14 +8,14 @@ Method: `POST`
 
 Request:
 
-```json
+```
     {
-        'email': Your Email
+        ‘email’: Your Email
         'password': Your password
     }
 ```
 Response:
-  ```json
+```
       {
           'status': Result of action,
           'message': Message,
@@ -27,7 +27,7 @@ Method: `POST`
 
 Request:
     
-  ```json
+  ```
       {
         'email':Your Email(unique)
         'password': Your password
@@ -35,7 +35,7 @@ Request:
       }
  ```
 Response:
-  ```json
+  ```
       {
           'status': Result of action,
           'message': Message,
@@ -56,7 +56,9 @@ Header
 
 
 ```
-        {Authentication: 'Bearer [Your token]'}
+    {
+        Authentication: 'Bearer [Your token]'
+    }
 ```
 Response
 ```

@@ -4,7 +4,7 @@ from user.utils import authenticate
 from . import db, bcrypt
 
 from user.models import User
-from flask_restful_swagger import swagger
+
 
 auth_blueprint = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -61,7 +61,6 @@ def register_user():
 
 
 @auth_blueprint.route('/login', methods=['POST'])
-
 def login_user():
     # get post data
     post_data = request.get_json()

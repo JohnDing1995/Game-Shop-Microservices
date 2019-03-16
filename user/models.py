@@ -1,24 +1,23 @@
 import datetime
 
 import jwt
+from flask_bcrypt import Bcrypt
+from flask_sqlalchemy import SQLAlchemy
+from user.config import Config
 
-from . import db, bcrypt
-from sqlalchemy import Column, Integer, String
 
-JWT_EXP_DELTA_MINS = 30
-JWT_SECRET = 'thesecretoflogin'
-JWT_ALGORITHM = 'HS256'
-ENCRYPT_ROUND = 6
 
+db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 class User(db.Model):
     __tablename__ = "users"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(50), nullable=False)
-    email = Column(String(50), nullable=False)
-    is_active = Column(db.Boolean, default=False)
-    created_at = Column(db.DateTime, nullable=False)
-    password = Column(String(255), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    is_active = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
 
     def __init__(self, username, email, password, is_active = False, created_at = datetime.datetime.utcnow()):
         self.username = username
@@ -26,15 +25,15 @@ class User(db.Model):
         self.is_active = is_active
         self.created_at = created_at
         self.password = bcrypt.generate_password_hash(
-            password, ENCRYPT_ROUND).decode()
+            password, Config.ENCRYPT_ROUND).decode()
 
     def encode_token(self):
         payload = {
             'user_id': self.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=JWT_EXP_DELTA_MINS)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=Config.JWT_EXP_DELTA_MINS)
         }
         try:
-            jwt_token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
+            jwt_token = jwt.encode(payload, Config.JWT_SECRET, Config.JWT_ALGORITHM)
             return jwt_token
         except Exception as e:
             return e
@@ -42,7 +41,7 @@ class User(db.Model):
     @staticmethod
     def decode_token(token):
         try:
-            payload = jwt.decode(token, JWT_SECRET)
+            payload = jwt.decode(token, Config.JWT_SECRET)
             return payload['user_id']
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'

@@ -1,11 +1,6 @@
-from . import db
-import enum
+from flask_sqlalchemy import SQLAlchemy
 
-class Category(enum.Enum):
-    action = 1
-    rpg = 2
-    racing = 3
-    fps = 4
+db = SQLAlchemy()
 
 class Game(db.Model):
     __tablename__ = "games"
@@ -15,14 +10,10 @@ class Game(db.Model):
     price = db.Column(db.Float, nullable=False)
     sales = db.Column(db.BigInteger, nullable=False)
     developer = db.Column(db.Integer, nullable=False)
+
     def __init__(self, name, price, category, developer, sales=0):
         self.name = name
         self.category = category
         self.price = price
         self.sales = sales
         self.developer = developer
-
-
-
-
-

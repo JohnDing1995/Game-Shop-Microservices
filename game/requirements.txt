@@ -1,7 +1,6 @@
 flask
 flask_restplus
 requests
-pyjwt
 flask_marshmallow
 flask_sqlalchemy
 gunicorn

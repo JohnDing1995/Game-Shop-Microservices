@@ -25,7 +25,7 @@ def create_app():
     from user.users import users_blueprint
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(auth_blueprint)
-    db.create_all()
+
 
 
 
